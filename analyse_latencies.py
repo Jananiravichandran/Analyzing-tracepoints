@@ -1,4 +1,5 @@
 # This script reads trace output and shows latencies
+# Usage: python analyse_latencies.py -s /path/to/trace_pipe -t THRESHOLD
 
 import argparse
 import re

@@ -103,6 +103,7 @@ def follow(thefile):
 logfile = open(source_path)
 loglines = follow(logfile)
 
+# TODO: The if else here should be changed to an equivalent of switch case
 for line in loglines:
     matches = re.match(tracepoint_pattern, line)
     if matches:

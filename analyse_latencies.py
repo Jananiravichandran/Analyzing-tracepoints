@@ -34,7 +34,7 @@ source_path = args.source_path
 threshold = args.threshold
 
 # Regexes for tracepoints
-tracepoint_pattern = re.compile(r'\s*([\w-]*)\s*(\[\d*\])\s*(.*)\s+(\d+\.\d+):\s*(\w*):\s*(.*)')
+tracepoint_pattern = re.compile(r'\s*([\w-]+)\s+(\[\d+\])\s+(.*)\s+(\d+\.\d+):\s+(\w+):\s+(.*)')
 
 # Regexes for slowpath trace information
 slowpath_begin_pattern = re.compile(r'gfp_mask:(\w*) order=(\d*)')

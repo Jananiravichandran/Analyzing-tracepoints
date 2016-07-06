@@ -78,15 +78,15 @@ def add_process_key_if_needed(process):
     if process in all_information:
         return
     all_information[process] = {}
-    all_information[process]["timestamps"] = {}
-    all_information[process]["info"] = {}
+    all_information[process]['timestamps'] = {}
+    all_information[process]['info'] = {}
 
 
 # Records the start time of a given event
 def set_begin_time(process_info, EVENT, timestamp):
     add_process_key_if_needed(process_info)
     per_process_data = all_information.get(process_info, None)
-    per_process_time = per_process_data.get("timestamps", None)
+    per_process_time = per_process_data.get('timestamps', None)
     per_process_time[EVENT] = timestamp
 
 
@@ -94,7 +94,7 @@ def set_begin_time(process_info, EVENT, timestamp):
 def find_latency(process_info, BEGIN_EVENT, timestamp):
     per_process_data = all_information.get(process_info, None)
     if per_process_data:
-        per_process_time = per_process_data.get("timestamps", None)
+        per_process_time = per_process_data.get('timestamps', None)
         if per_process_time:
             begin_timestamp = per_process_time.get(BEGIN_EVENT, None)
             if begin_timestamp:
@@ -129,7 +129,7 @@ def get_info_dict_for_event(process_info, EVENT):
 def get_info_dict_for_process(process_info):
     process_data = all_information.get(process_info, None)
     if process_data:
-        return process_data.get("info", None)
+        return process_data.get('info', None)
     return None
 
 
@@ -159,8 +159,8 @@ for line in output_lines:
             match_format = re.match(slowpath_begin_pattern, trace_info)
             if match_format:
                 info_to_add = {}
-                info_to_add["gfp_mask"] = match_format.group(1)
-                info_to_add["order"] = match_format.group(2)
+                info_to_add['gfp_mask'] = match_format.group(1)
+                info_to_add['order'] = match_format.group(2)
                 info_dict = get_info_dict_for_process(process_info)
                 info_dict[SLOWPATH_BEGIN] = info_to_add
 
@@ -169,7 +169,7 @@ for line in output_lines:
                                                       SLOWPATH_BEGIN,
                                                       timestamp)
             if delay_status:
-                print_info(process_info, "slowpath", SLOWPATH_BEGIN,
+                print_info(process_info, 'slowpath', SLOWPATH_BEGIN,
                             time_elapsed)
                 match_format = re.match(slowpath_end_pattern, trace_info)
                 if match_format:
@@ -182,8 +182,8 @@ for line in output_lines:
             match_format = re.match(direct_reclaim_begin_pattern, trace_info)
             if match_format:
                 info_to_add = {}
-                info_to_add["order"] = match_format.group(1)
-                info_to_add["gfp_flags"] = match_format.group(3)
+                info_to_add['order'] = match_format.group(1)
+                info_to_add['gfp_flags'] = match_format.group(3)
                 info_dict = get_info_dict_for_process(process_info)
                 info_dict[DIRECT_RECLAIM_BEGIN] = info_to_add
 
@@ -192,7 +192,7 @@ for line in output_lines:
                                                       DIRECT_RECLAIM_BEGIN,
                                                       time_elapsed)
             if delay_status:
-                print_info(process_info, "direct reclaim", 
+                print_info(process_info, 'direct reclaim', 
                             DIRECT_RECLAIM_BEGIN, timestamp)
                 match_format = re.match(direct_reclaim_end_pattern, trace_info)
                 if match_format:
@@ -203,7 +203,7 @@ for line in output_lines:
             match_format = re.match(shrink_zones_begin_pattern, trace_info)
             if match_format:
                 info_to_add = {}
-                info_to_add["priority"] = match_format.group(1)
+                info_to_add['priority'] = match_format.group(1)
                 info_dict = get_info_dict_for_process(process_info)
                 info_dict[SHRINK_ZONES_BEGIN] = info_to_add
 
@@ -212,7 +212,7 @@ for line in output_lines:
                                                       SHRINK_ZONES_BEGIN,
                                                       timestamp)
             if delay_status:
-                print_info(process_info, "shrink zones",
+                print_info(process_info, 'shrink zones',
                            SHRINK_ZONES_BEGIN, time_elapsed)
                 match_format = re.match(shrink_zones_end_pattern, trace_info)
                 if match_format:
@@ -223,9 +223,9 @@ for line in output_lines:
             match_format = re.match(softlimit_reclaim_begin_pattern, trace_info)
             if match_format:
                 info_to_add = {}
-                info_to_add["nid"] = match_format.group(1)
-                info_to_add["zid"] = match_format.group(2)
-                info_to_add["is_classzone"] = match_format.group(3)
+                info_to_add['nid'] = match_format.group(1)
+                info_to_add['zid'] = match_format.group(2)
+                info_to_add['is_classzone'] = match_format.group(3)
                 info_dict = get_info_dict_for_process(process_info)
                 info_dict[SOFTLIMIT_RECLAIM_START] = info_to_add
 
@@ -234,7 +234,7 @@ for line in output_lines:
                                                       SOFTLIMIT_RECLAIM_START,
                                                       timestamp) 
             if delay_status:
-                print_info(process_info, "softlimit reclaim",
+                print_info(process_info, 'softlimit reclaim',
                             SOFTLIMIT_RECLAIM_START, time_elapsed)
                 match_format = re.match(softlimit_reclaim_end_pattern,
                                         trace_info)
@@ -246,9 +246,9 @@ for line in output_lines:
             match_format = re.match(shrink_zone_begin_pattern, trace_info)
             if match_format:
                 info_to_add = {}
-                info_to_add["nid"] = match_format.group(1)
-                info_to_add["zid"] = match_format.group(2)
-                info_to_add["is_classzone"] = match_format.group(3)
+                info_to_add['nid'] = match_format.group(1)
+                info_to_add['zid'] = match_format.group(2)
+                info_to_add['is_classzone'] = match_format.group(3)
                 info_dict = get_info_dict_for_process(process_info)
                 info_dict[SHRINK_ZONE_BEGIN] = info_to_add
 
@@ -257,7 +257,7 @@ for line in output_lines:
                                                       SHRINK_ZONE_BEGIN,
                                                       timestamp)
             if delay_status:
-                print_info(process_info, "shrink zone",
+                print_info(process_info, 'shrink zone',
                            SHRINK_ZONE_BEGIN, time_elapsed)
                 match_format = re.match(shrink_zone_end_pattern, trace_info)
                 if match_format:
@@ -268,9 +268,9 @@ for line in output_lines:
             match_format = re.match(shrink_zone_memcg_begin_pattern, trace_info)
             if match_format:
                 info_to_add = {}
-                info_to_add["zone_lru_pages"] = match_format.group(1)
-                info_to_add["nr_reclaimed"] = match_format.group(2)
-                info_to_add["nr_scanned"] = match_format.group(3)
+                info_to_add['zone_lru_pages'] = match_format.group(1)
+                info_to_add['nr_reclaimed'] = match_format.group(2)
+                info_to_add['nr_scanned'] = match_format.group(3)
                 info_dict = get_info_dict_for_process(process_info)
                 info_dict[SHRINK_ZONE_MEMCG_BEGIN] = info_to_add
 
@@ -279,7 +279,7 @@ for line in output_lines:
                                                       SHRINK_ZONE_MEMCG_BEGIN,
                                                       timestamp)
             if delay_status:
-                print_info(process_info, "shrink zone memcg",
+                print_info(process_info, 'shrink zone memcg',
                            SHRINK_ZONE_MEMCG_BEGIN, time_elapsed)
                 match_format = re.match(shrink_zone_memcg_end_pattern,
                                         trace_info)
@@ -291,9 +291,9 @@ for line in output_lines:
             match_format = re.match(shrink_list_begin_pattern, trace_info)
             if match_format:
                 info_to_add = {}
-                info_to_add["lru"] = match_format.group(1)
-                info_to_add["nr_to_scan"] = match_format.group(2)
-                info_to_add["nr_lru"] = match_format.group(3)
+                info_to_add['lru'] = match_format.group(1)
+                info_to_add['nr_to_scan'] = match_format.group(2)
+                info_to_add['nr_lru'] = match_format.group(3)
                 info_dict = get_info_dict_for_process(process_info)
                 info_dict[SHRINK_LIST_BEGIN] = info_to_add
 
@@ -302,7 +302,7 @@ for line in output_lines:
                                                       SHRINK_LIST_BEGIN,
                                                       timestamp)
             if delay_status:
-                print_info(process_info, "shrink list", 
+                print_info(process_info, 'shrink list', 
                            SHRINK_LIST_BEGIN, time_elapsed)
                 match_format = re.match(shrink_list_end_pattern, trace_info)
                 if match_format:
@@ -314,8 +314,8 @@ for line in output_lines:
                                     trace_info)
             if match_format:
                 info_to_add = {}
-                info_to_add["nr_scanned"] = match_format.group(1)
-                info_to_add["nr_eligible"] = match_format.group(2)
+                info_to_add['nr_scanned'] = match_format.group(1)
+                info_to_add['nr_eligible'] = match_format.group(2)
                 info_dict = get_info_dict_for_process(process_info)
                 info_dict[SHRINK_SLAB_CACHES_BEGIN] = info_to_add
 
@@ -324,7 +324,7 @@ for line in output_lines:
                                                       SHRINK_SLAB_CACHES_BEGIN,
                                                       timestamp)
             if delay_status:
-                print_info(process_info, "shrink slab caches",
+                print_info(process_info, 'shrink slab caches',
                            SHRINK_SLAB_CACHES_BEGIN, time_elapsed)
                 match_format = re.match(shrink_slab_caches_end_pattern,
                                         trace_info)
@@ -346,9 +346,9 @@ for line in output_lines:
             match_format = re.match(compact_begin_pattern, trace_info)
             if match_format:
                 info_to_add = {}
-                info_to_add["order"] = match_format.group(1)
-                info_to_add["gfp_mask"] = match_format.group(2)
-                info_to_add["mode"] = match_format.group(3)
+                info_to_add['order'] = match_format.group(1)
+                info_to_add['gfp_mask'] = match_format.group(2)
+                info_to_add['mode'] = match_format.group(3)
                 info_dict = get_info_dict_for_process(process_info)
                 info_dict[COMPACTION_BEGIN] = info_to_add
 
@@ -357,7 +357,7 @@ for line in output_lines:
                                                       COMPACTION_BEGIN,
                                                       timestamp)
             if delay_status:
-                print_info(process_info, "compaction", COMPACTION_BEGIN,
+                print_info(process_info, 'compaction', COMPACTION_BEGIN,
                            time_elapsed)
                 match_format = re.match(compact_end_pattern, trace_info)
                 if match_format:
@@ -368,20 +368,20 @@ for line in output_lines:
             match_format = re.match(compact_zone_begin_pattern, trace_info)
             if match_format:
                 info_to_add = {}
-                info_to_add["nid"] = match_format.group(1)
-                info_to_add["zid"] = match_format.group(2)
-                info_to_add["zone_start"] = match_format.group(3)
-                info_to_add["migrate_pfn"] = match_format.group(4)
-                info_to_add["free_pfn"] = match_format.group(5)
-                info_to_add["zone_end"] = match_format.group(6)
-                info_to_add["mode"] = match_format.group(7)
+                info_to_add['nid'] = match_format.group(1)
+                info_to_add['zid'] = match_format.group(2)
+                info_to_add['zone_start'] = match_format.group(3)
+                info_to_add['migrate_pfn'] = match_format.group(4)
+                info_to_add['free_pfn'] = match_format.group(5)
+                info_to_add['zone_end'] = match_format.group(6)
+                info_to_add['mode'] = match_format.group(7)
 
         elif tracepoint_name == 'mm_compaction_zone_end':
             delay_status, time_elapsed = find_latency(process_info,
                                                       COMPACTION_ZONE_BEGIN,
                                                       timestamp)
             if delay_status:
-                print_info(process_info, "zone compaction",
+                print_info(process_info, 'zone compaction',
                            COMPACTION_ZONE_BEGIN, time_elapsed)
                 match_format = re.match(compact_zone_end_pattern, trace_info)
                 if match_format:

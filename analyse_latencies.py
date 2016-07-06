@@ -70,7 +70,7 @@ all_information = {}
 # Converts raw string time to milliseconds  
 def convert_time(raw_time): 
     time_components = raw_time.split('.')
-    return float(time_components[0]) * 1000 + float(time_components[1]) / 1000
+    return float(time_components[0])*1000 + float(time_components[1])/1000
 
 
 # Ensures there is an entry in the dictionary for a given process

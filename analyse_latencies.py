@@ -66,10 +66,12 @@ compact_zone_end_pattern = re.compile(r'zone_start=(\w*) migrate_pfn=(\w*) free_
 # The dictionary which holds information from tracepoints for all the processes
 all_information = {}
 
+
 # Converts raw string time to milliseconds  
 def convert_time(raw_time): 
     time_components = raw_time.split('.')
     return float(time_components[0]) * 1000 + float(time_components[1]) / 1000
+
 
 # Ensures there is an entry in the dictionary for a given process
 def add_process_key_if_needed(process):
@@ -79,12 +81,14 @@ def add_process_key_if_needed(process):
     all_information[process]["timestamps"] = {}
     all_information[process]["info"] = {}
 
+
 # Records the start time of a given event
 def set_begin_time(process_info, EVENT, timestamp):
     add_process_key_if_needed(process_info)
     per_process_data = all_information.get(process_info, None)
     per_process_time = per_process_data.get("timestamps", None)
     per_process_time[EVENT] = timestamp
+
 
 # Calculates time elapsed from the start of the event to the end
 def find_latency(process_info, BEGIN_EVENT, timestamp):
@@ -100,6 +104,7 @@ def find_latency(process_info, BEGIN_EVENT, timestamp):
                     return (True, time_elapsed)
     return (False, 0.0)
 
+
 # Prints latency and begin info of events
 def print_info(process_info, message, EVENT, time):
     print '\n' + process_info + ' : ' + message + ' : time = ' + str(time) + ' ms'
@@ -110,6 +115,7 @@ def print_info(process_info, message, EVENT, time):
             print key + ' = ' + value + ' ',
         print '\n',
 
+
 # Returns information dictionary for a specific event
 def get_info_dict_for_event(process_info, EVENT):
     process_info_dict = get_info_dict_for_process(process_info)
@@ -118,6 +124,7 @@ def get_info_dict_for_event(process_info, EVENT):
         return dict_for_event
     return None
 
+
 # Returns information dictionary for a process
 def get_info_dict_for_process(process_info):
     process_data = all_information.get(process_info, None)
@@ -125,12 +132,14 @@ def get_info_dict_for_process(process_info):
         return process_data.get("info", None)
     return None
 
+
 def follow(thefile):
     while True:
         line = thefile.readline()
         if not line:
             continue
         yield line
+
 
 trace_file = open(source_path)
 output_lines = follow(trace_file)

@@ -157,7 +157,8 @@ for line in output_lines:
 
         elif tracepoint_name == 'mm_slowpath_end':
             delay_status, time_elapsed = find_latency(process_info,
-                                                SLOWPATH_BEGIN, timestamp)
+                                                      SLOWPATH_BEGIN,
+                                                      timestamp)
             if delay_status:
                 print_info(process_info, "slowpath", SLOWPATH_BEGIN,
                             time_elapsed)
@@ -179,8 +180,8 @@ for line in output_lines:
 
         elif tracepoint_name == 'mm_vmscan_direct_reclaim_end':
             delay_status, time_elapsed = find_latency(process_info,
-                                                DIRECT_RECLAIM_BEGIN,
-                                                time_elapsed)
+                                                      DIRECT_RECLAIM_BEGIN,
+                                                      time_elapsed)
             if delay_status:
                 print_info(process_info, "direct reclaim", 
                             DIRECT_RECLAIM_BEGIN, timestamp)
@@ -199,10 +200,11 @@ for line in output_lines:
 
         elif tracepoint_name == 'mm_vmscan_shrink_zones_end':
             delay_status, time_elapsed = find_latency(process_info,
-                                                SHRINK_ZONES_BEGIN, timestamp)
+                                                      SHRINK_ZONES_BEGIN,
+                                                      timestamp)
             if delay_status:
                 print_info(process_info, "shrink zones",
-                            SHRINK_ZONES_BEGIN, time_elapsed)
+                           SHRINK_ZONES_BEGIN, time_elapsed)
                 match_format = re.match(shrink_zones_end_pattern, trace_info)
                 if match_format:
                     print 'end : total_scanned = ' + match_format.group(1) + ' nr_scanned = ' + match_format.group(2) + ' nr_reclaimed = ' + match_format.group(3) + ' nr_to_reclaim = ' + match_format.group(4) + ' compaction_ready = ' + match_format.group(5)
@@ -220,8 +222,8 @@ for line in output_lines:
 
         elif tracepoint_name == 'mm_vmscan_softlimit_reclaim_end':
             delay_status, time_elapsed = find_latency(process_info,
-                                                SOFTLIMIT_RECLAIM_START,
-                                                timestamp) 
+                                                      SOFTLIMIT_RECLAIM_START,
+                                                      timestamp) 
             if delay_status:
                 print_info(process_info, "softlimit reclaim",
                             SOFTLIMIT_RECLAIM_START, time_elapsed)
@@ -243,10 +245,11 @@ for line in output_lines:
 
         elif tracepoint_name == 'mm_vmscan_shrink_zone_end':
             delay_status, time_elapsed = find_latency(process_info,
-                                                SHRINK_ZONE_BEGIN, timestamp)
+                                                      SHRINK_ZONE_BEGIN,
+                                                      timestamp)
             if delay_status:
                 print_info(process_info, "shrink zone",
-                            SHRINK_ZONE_BEGIN, time_elapsed)
+                           SHRINK_ZONE_BEGIN, time_elapsed)
                 match_format = re.match(shrink_zone_end_pattern, trace_info)
                 if match_format:
                     print 'end : nr_reclaimed = ' + match_format.group(1) + ' nr_scanned = ' + match_format.group(2) + ' reclaimable = ' + match_format.group(3)
@@ -264,11 +267,11 @@ for line in output_lines:
 
         elif tracepoint_name == 'mm_vmscan_shrink_zone_memcg_end':
             delay_status, time_elapsed = find_latency(process_info,
-                                                SHRINK_ZONE_MEMCG_BEGIN,
-                                                timestamp)
+                                                      SHRINK_ZONE_MEMCG_BEGIN,
+                                                      timestamp)
             if delay_status:
                 print_info(process_info, "shrink zone memcg",
-                            SHRINK_ZONE_MEMCG_BEGIN, time_elapsed)
+                           SHRINK_ZONE_MEMCG_BEGIN, time_elapsed)
                 match_format = re.match(shrink_zone_memcg_end_pattern,
                                         trace_info)
                 if match_format:
@@ -287,10 +290,11 @@ for line in output_lines:
 
         elif tracepoint_name == 'mm_vmscan_shrink_list_end':
             delay_status, time_elapsed = find_latency(process_info,
-                                                SHRINK_LIST_BEGIN, timestamp)
+                                                      SHRINK_LIST_BEGIN,
+                                                      timestamp)
             if delay_status:
                 print_info(process_info, "shrink list", 
-                            SHRINK_LIST_BEGIN, time_elapsed)
+                           SHRINK_LIST_BEGIN, time_elapsed)
                 match_format = re.match(shrink_list_end_pattern, trace_info)
                 if match_format:
                     print 'end : nr_reclaimed = ' + match_format.group(1) + ' nr_to_reclaim = ' + match_format.group(2) + ' scan_adjusted = ' + match_format.group(3)
@@ -308,11 +312,11 @@ for line in output_lines:
 
         elif tracepoint_name == 'mm_vmscan_shrink_slab_caches_end':
             delay_status, time_elapsed = find_latency(process_info,
-                                                SHRINK_SLAB_CACHES_BEGIN,
-                                                timestamp)
+                                                      SHRINK_SLAB_CACHES_BEGIN,
+                                                      timestamp)
             if delay_status:
                 print_info(process_info, "shrink slab caches",
-                            SHRINK_SLAB_CACHES_BEGIN, time_elapsed)
+                           SHRINK_SLAB_CACHES_BEGIN, time_elapsed)
                 match_format = re.match(shrink_slab_caches_end_pattern,
                                         trace_info)
                 if match_format:
@@ -323,7 +327,8 @@ for line in output_lines:
 
         elif tracepoint_name == 'mm_vmscan_shrink_slab_end':
             delay_status, time_elapsed = find_latency(process_info,
-                                                SHRINK_SLAB_BEGIN, timestamp)
+                                                      SHRINK_SLAB_BEGIN,
+                                                      timestamp)
             if delay_status:
                 print process_info + ' shrink slab latency ' + str(time_elapsed)
 
@@ -340,10 +345,11 @@ for line in output_lines:
 
         elif tracepoint_name == 'mm_compaction_try_to_compact_pages_end':
             delay_status, time_elapsed = find_latency(process_info,
-                                                COMPACTION_BEGIN, timestamp)
+                                                      COMPACTION_BEGIN,
+                                                      timestamp)
             if delay_status:
                 print_info(process_info, "compaction", COMPACTION_BEGIN,
-                            time_elapsed)
+                           time_elapsed)
                 match_format = re.match(compact_end_pattern, trace_info)
                 if match_format:
                     print 'end : rc = ' + match_format.group(1) + ' contended = ' + match_format.group(2)
@@ -363,11 +369,11 @@ for line in output_lines:
 
         elif tracepoint_name == 'mm_compaction_zone_end':
             delay_status, time_elapsed = find_latency(process_info,
-                                                COMPACTION_ZONE_BEGIN,
-                                                timestamp)
+                                                      COMPACTION_ZONE_BEGIN,
+                                                      timestamp)
             if delay_status:
                 print_info(process_info, "zone compaction",
-                            COMPACTION_ZONE_BEGIN, time_elapsed)
+                           COMPACTION_ZONE_BEGIN, time_elapsed)
                 match_format = re.match(compact_zone_end_pattern, trace_info)
                 if match_format:
                     print 'end : mode = ' + match_format.group(5) + ' status = ' + match_format.group(6)

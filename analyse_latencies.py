@@ -20,14 +20,14 @@ COMPACTION_BEGIN            = 9
 COMPACTION_ZONE_BEGIN       = 10
 
 # Parse command line arguments
-parser = argparse.ArgumentParser(description='Parser for latency analyzer')
+parser = argparse.ArgumentParser(description = 'Parser for latency analyzer')
 
-parser.add_argument('-s', '--source', action ='store', 
-                    default='/sys/kernel/debug/tracing/trace_pipe',
-                    dest='source_path',
-                    help='Specify source file to read tracepoints from')
-parser.add_argument('-t', '--threshold', action='store', default=0.0,
-                    dest='threshold', type=float)
+parser.add_argument('-s', '--source', action = 'store',
+                    default = '/sys/kernel/debug/tracing/trace_pipe',
+                    dest = 'source_path',
+                    help = 'Specify source file to read tracepoints from')
+parser.add_argument('-t', '--threshold', action = 'store', default = 0.0,
+                    dest = 'threshold', type = float)
 args = parser.parse_args()
 
 source_path = args.source_path

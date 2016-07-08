@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# Python 2.7
 # This script shows latencies in direct reclaim and slab shrinkers.
 # The input is from trace_pipe.
 # Usage: ./shrink_slab_latencies.py -s PATH/TO/TRACE_PIPE -t THRESHOLD_IN_MS.

@@ -119,8 +119,7 @@ def print_info(process_info, message, EVENT, time):
         for key, value in begin_info.iteritems():
             print '%s = %s' %(key, value),
         print '\n',
-    else:
-        print 'Not found!'
+
 
 # Returns information dictionary for a specific event
 def get_info_dict_for_event(process_info, EVENT):

@@ -37,12 +37,12 @@ direct_reclaim_begin_pattern = re.compile(r'\s*order=(\d*) may_writepage=([01])'
 direct_reclaim_end_pattern = re.compile(r'\s*nr_reclaimed=(\d*)')
 
 # Regexes for shrinking slabs
-shrink_slab_begin_pattern = re.compile(r'\s*name:(\w*) (.*) (\w*): nid: (\d*)'
+shrink_slab_begin_pattern = re.compile(r'\s*name: (\w*) (.*) (\w*): nid: (\d*)'
                                        ' objects to shrink (\d*) gfp_flags'
                                        ' (.*) pgs_scanned (\d*) lru_pgs (\d*)'
                                        ' cache items (\d*) delta (\d*)'
                                        ' total_scan (\d*)')
-shrink_slab_end_pattern = re.compile(r'\s*name:(\w*) (.*) (\w*): nid: (\d*)'
+shrink_slab_end_pattern = re.compile(r'\s*name: (\w*) (.*) (\w*): nid: (\d*)'
                                      ' unused scan count (\d*) new scan count'
                                      ' (\d*) total_scan (\d*) last shrinker'
                                      ' return val (\d*)')

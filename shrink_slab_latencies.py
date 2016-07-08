@@ -2,6 +2,8 @@
 
 # This script shows latencies in direct reclaim and slab shrinkers.
 # The input is from trace_pipe.
+# Usage: ./shrink_slab_latencies.py -s PATH/TO/TRACE_PIPE -t THRESHOLD_IN_MS.
+# Total time spent in each shrinker is shown when CTRL+C is presed.
 
 import signal
 import argparse

@@ -63,7 +63,7 @@ def print_shrinker_latencies(signum, frame):
         print '%s : %s ms' %(key, value)
         total_time += value
     total_time = total_time
-    print '\ntotal time spent in shrinkers = %f ms' %(total_time)
+    print '\ntotal time spent in shrinkers = %.3f ms' %(total_time)
     sys.exit(1)
 
 
@@ -204,13 +204,13 @@ for line in output_lines:
                 name = match_format.group(1)
                 shrinker_latencies[name] += time_elapsed
             
-            if delay_status:
-                print_info(process_info, 'shrink slab', SHRINK_SLAB_BEGIN,
-                           time_elapsed)
-                print 'total time spent in %s = %f' %(name,
-                        shrinker_latencies[name]) 
-                print 'end : name = %s new scan count = %s' %(
-                        match_format.group(1), match_format.group(6))
+                if delay_status:
+                    print_info(process_info, 'shrink slab', SHRINK_SLAB_BEGIN,
+                               time_elapsed)
+                    print 'total time spent in %s = %.3f' %(name,
+                            shrinker_latencies[name]) 
+                    print 'end : name = %s new scan count = %s' %(
+                            match_format.group(1), match_format.group(6))
 
 
         trace_match = {'mm_vmscan_direct_reclaim_begin' : direct_reclaim_b,

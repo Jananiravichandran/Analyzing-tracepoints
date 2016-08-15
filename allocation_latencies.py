@@ -12,7 +12,6 @@ import signal
 from collections import defaultdict
 
 # Constants for tracepoints
-
 DIRECT_RECLAIM_BEGIN        = 1
 DIRECT_RECLAIM_END          = 2
 SHRINK_SLAB_START           = 3
@@ -20,8 +19,8 @@ SHRINK_INACTIVE_LIST        = 5
 TRY_TO_COMPACT              = 6
 COMPACTION_BEGIN            = 7
 COMPACTION_END              = 8
-# Parse command line arguments
 
+# Parse command line arguments
 parser = argparse.ArgumentParser(description='Parser for latency analyzer')
 
 parser.add_argument('-s', '--source', action='store',
@@ -40,20 +39,18 @@ source_path = args.source_path
 threshold = args.threshold
 output_file = args.output_file
 
-# Regex for lines
+# Regexes
 line_pattern = re.compile(r'(\d+\.\d+)\s+\|\s+\d*\)*\s+([\w-]+)\s+\|\s+.*\s+(\d*\.*\d*)\s+[us]{0,2}\s+\|\s+(.*)')
-
-# Regex for tracepoints
 tracepoint_pattern = re.compile(r'\/\*\s*([\w]*):\s*(.*)\s*\*\/')
 shrinker_pattern = re.compile(r'\s*([\w]*)\+(.*)\s*')
-
 function_end_pattern = re.compile(r'.*\/\*\s*([\w]*)\s*\*\/')
 
 # The dictionary which holds tracepoint information for all processes
-
 all_information = defaultdict(dict)
 
+# The dictionary which holds shrinker latencies
 shrinker_latencies = defaultdict(float)
+
 
 def print_shrinker_latencies(signum, frame):
     signal.signal(signal.SIGINT, original_sigint)
@@ -61,8 +58,10 @@ def print_shrinker_latencies(signum, frame):
         print '%s : %f ms' %(key, value*1000)
     sys.exit(0)
 
+
 original_sigint = signal.getsignal(signal.SIGINT)
 signal.signal(signal.SIGINT, print_shrinker_latencies)
+
 
 def set_begin_info(process, EVENT, timestamp, info):
     per_process_dict = all_information[process]
@@ -71,9 +70,11 @@ def set_begin_info(process, EVENT, timestamp, info):
     begin_info["time"] = timestamp
     per_process_dict[EVENT] = begin_info
 
+
 def set_trace_info(process, EVENT, info):
     per_process_dict = all_information[process]
     per_process_dict[EVENT] = info
+
 
 def find_latency(process, BEGIN_EVENT, timestamp):
     per_process_dict = all_information.get(process, None)
@@ -103,6 +104,7 @@ def print_tracepoint(process, EVENT, info):
         if TP_info:
             print TP_info
         per_process_dict.pop(EVENT, None)
+
 
 def follow(the_file):
     while True:
@@ -214,6 +216,8 @@ for line in loglines:
                     print_tracepoint(process_info, DIRECT_RECLAIM_BEGIN, None)
                     print_tracepoint(process_info, DIRECT_RECLAIM_END, None)
                     print_line(line)
+
+
                 def shrink_inactive_list():
                     print_tracepoint(process_info, SHRINK_INACTIVE_LIST, None)
                     print_line(line)

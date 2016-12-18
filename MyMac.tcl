@@ -1,8 +1,15 @@
+if { $argc != 1 } {
+    puts "The add.tcl script requires one number to be inputed - repeat times."
+    puts "For example, ns MyMac.tcl 5".
+    puts "Please try again."
+    exit(0)
+}
+
 # Specs given in the project document
 set val(node_num)       101 
-set val(duration)       100
+set val(duration)       10 
 set val(packetsize)     128
-set val(repeatTx_)      10
+set val(repeatTx_)      [lindex $argv 0] 
 set val(cbrInterval_)   0.02
 set val(dim)           50
 set val(trace_file)     jravicha.tr
@@ -69,37 +76,35 @@ set rng [new RNG]
 $rng seed 10
 
 # RNG for position
-set xrand [new RandomVariable/Uniform]
-$xrand use-rng $rng
-$xrand set min_ [expr -$val(dim)/2]
-$xrand set max_ [expr $val(dim)/2]
+set rand_loc [new RandomVariable/Uniform]
+$rand_loc use-rng $rng
+$rand_loc set min_ [expr -$val(dim)/2]
+$rand_loc set max_ [expr $val(dim)/2]
 
 # RNG for time
-set trand [new RandomVariable/Uniform]
-$trand use-rng $rng
-$trand set min_ 0
-$trand set max_ $val(cbrInterval_)
+set rand_time [new RandomVariable/Uniform]
+$rand_time use-rng $rng
+$rand_time set min_ 0
+$rand_time set max_ $val(cbrInterval_)
 
 # Create all other nodes
 for {set i 0} {$i < $val(nn)-1 } {incr i} {
     set src_node($i) [$ns node] 
     $src_node($i) random-motion 0
-    set x [expr $val(dim)/2 + [$xrand value]]
-    set y [expr $val(dim)/2 + [$xrand value]]
+    set x [expr $val(dim)/2 + [$rand_loc value]]
+    set y [expr $val(dim)/2 + [$rand_loc value]]
     $src_node($i) set X_ $x
     $src_node($i) set Y_ $y
     $ns initial_node_pos $src_node($i) $val(node_size)
-
     set udp($i) [new Agent/UDP]
     $udp($i) set class_ $i
     $ns attach-agent $src_node($i) $udp($i)
     $ns connect $udp($i) $sink
-
     set cbr($i) [new Application/Traffic/CBR]
     $cbr($i) set packet_size_ $val(packetsize)
     $cbr($i) set interval_ $val(cbrInterval_)
     $cbr($i) attach-agent $udp($i)
-    set start [$trand value]
+    set start [$rand_time value]
     $ns at $start "$cbr($i) start"
  
     $ns at $val(duration) "$cbr($i) stop"
@@ -114,7 +119,7 @@ $ns at $val(duration) "end"
 
 # Function to call when simulation ends
 proc end {} {
-    global ns tracefd val sink
+    global ns tracefd
     $ns flush-trace
     close $tracefd
     puts "END OF SIMULATION. CHECK TRACE FILE FOR RESULTS"

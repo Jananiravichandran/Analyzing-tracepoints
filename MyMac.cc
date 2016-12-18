@@ -1,4 +1,3 @@
-
 /*
  * mac-simple.cc
  * Copyright (C) 2003 by the University of Southern California
@@ -217,24 +216,6 @@ void MyMac::send(Packet *p, Handler *h)
 
 	pktTx_ = p;
 	txHandler_ = h;
-
-	/* check whether we're idle */
-	if (tx_state_ != MAC_IDLE) {
-		// already transmitting another packet .. drop this one
-		// Note that this normally won't happen due to the queue
-		// between the LL and the MAC .. the queue won't send us
-		// another packet until we call its handler in sendHandler()
-
-		Packet::free(p);
-		return;
-	}
-
-	if(rx_state_ != MAC_IDLE) {
-		trace_event("BACKING_OFF",p);
-	}
-	
-	pktTx_ = p;
-	txHandler_ = h;
 	
 	double max = 0.0;
 	
@@ -267,10 +248,36 @@ void MyMac::send(Packet *p, Handler *h)
 	delete [] random_times;
 
 	waitTimer->restart(max);
-	if(rx_state_!=MAC_IDLE)
-		sendTimer->restart(max+ch->txtime()+ HDR_CMN(pktRx_)->txtime());
-	else
+
+	/* check whether we're idle */
+	if (tx_state_ != MAC_IDLE) {
+		// already transmitting another packet .. drop this one
+		// Note that this normally won't happen due to the queue
+		// between the LL and the MAC .. the queue won't send us
+		// another packet until we call its handler in sendHandler()
+
+		Packet::free(p);
+		return;
+	}
+
+	double jitter = Random::random()%40 * 100/bandwidth_;
+	
+	if(rx_state_ != MAC_IDLE) {
+		trace_event("BACKING_OFF",p);
+	}
+
+	if (rx_state_ == MAC_IDLE ) {
+		// we're idle, so start sending now
 		sendTimer->restart(max+ch->txtime());
+		
+	} else {
+		// we're currently receiving, so schedule it after
+		// we finish receiving
+		//waitTimer->restart(jitter);
+		//sendTimer->restart(jitter + ch->txtime() + HDR_CMN(pktRx_)->txtime());
+		sendTimer->restart(max+ch->txtime()+ HDR_CMN(pktRx_)->txtime());
+	}
+
 }
 
 void MyMac::handle(Event* p) 
@@ -404,5 +411,3 @@ void MyMacRecvTimer::handle(Event *)
 
 	mac->recvHandler();
 }
-
-
